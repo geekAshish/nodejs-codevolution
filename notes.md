@@ -346,3 +346,21 @@ Servers on the other hand are computers that store web pages, sites, or apps
   The HTTP module allows creation of web servers that can transfer data over HTTP
 
 # Creating a Node Server
+http.js
+
+# JSON Response
+
+res.writeHead(200, {'Content-Type': 'application/json'})
+res.end(JSON.stringify(superHero))
+
+# HTML Response
+
+res.writeHead(200, {'Content-Type': 'text/html'})
+res.end("<h1>superman</h1>")
+
+# HTML Template
+dynamic html value
+
+# HTTP Routing
+
+# Web Framework
