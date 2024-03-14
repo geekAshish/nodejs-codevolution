@@ -530,5 +530,22 @@ Why can the order of execution never be guaranteed?
 Experiment 8 Inference
 1/0 queue callbacks are executed after Micro-task queues callbacks and Timer queue callbacks
 
+Experiment 9 Inference
+I/O events are polled and callback functions are added to the I/O queue only after the I/O is complete
+
+# Check Queue
+To queue a callback function into the check queue, we can use a function called setImmediate
+
+Experiment 1O Inference
+Check queue callbacks are executed after Micro-task queues callbacks, Timer queue callbacks and I/O queue callbacks are executed
+
+Experiment 11 Inference
+Micro-task queues callbacks are executed after I/O callbacks and before check queue callbacks
+
+Experiment 12 Inference
+Micro-task queues callbacks are executed in between check queue callbacks
+
+Experiment 13 Inference
+When running setTimeout with delay Oms and setImmediate method, the order of execution can never be guaranteed
 
 
