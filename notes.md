@@ -548,4 +548,27 @@ Micro-task queues callbacks are executed in between check queue callbacks
 Experiment 13 Inference
 When running setTimeout with delay Oms and setImmediate method, the order of execution can never be guaranteed
 
+# Close Queue
+Experiment 14 Inference
+Close queue callbacks are executed after all other queues callbacks in a given iteration of the event loop
+
+
+# Event Loop Summary
+The event loop is a C program that orchestrates or co-ordinates the execution of synchronous and asynchronous code in Node.js
+It co-ordinates the execution of callbacks in six different queues
+They are nextTick, Promise, timer, 1/0, check and close queues
+
+1. We use process.nextTick() method to queue into the nextTick queue
+2. We resolve or reject a Promise to queue into the Promise queue
+3. We use setTimeout or setInterval to queue into the timer queue
+4. Execute an async method to queue into the I/O queue
+5. Use setImmediate function to queue into the check queue and finally
+6. Attach close event listeners to queue into the close queue
+7. The order of execution follows the same order listed here
+8. nextTick and Promise queues are executed in between each queue and also in between each callback execution in the timer and check queues
+
+
+
+
+
 
