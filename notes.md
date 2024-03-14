@@ -501,3 +501,17 @@ All callbacks in nextTick queue are executed before callbacks in promise queue
 
 
 
+# Timer Queues
+Timer Queue technically isn't a queue, it's a min heap data structure
+
+Experiment 3 Inference
+Callbacks in the micro-task queues are executed before callbacks in the timer queue
+
+Experiment 4 Inference
+Callbacks in micro-task queues are executed in between the execution of callbacks in the timer queue
+
+Experiment 5 Inference
+Timer queue callbacks are executed in FIFO order
+
+
+
