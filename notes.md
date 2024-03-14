@@ -514,4 +514,21 @@ Experiment 5 Inference
 Timer queue callbacks are executed in FIFO order
 
 
+# I/O Queues
+Most of the async methods from the built-in modules queue the callback function in the I/O queue
+
+Experiment 6 Inference
+Callbacks in the micro-task queues are executed before callbacks in the 1/0 queue
+
+Experiment 7 Inference
+When running setTimeout with delay Oms and an I/O async method, the order of execution can never be guaranteed
+
+Why can the order of execution never be guaranteed?
+
+* https://chromium.googlesource.com/chromium/blink/+/master/Source/core/frame/DOMTimer.cpp
+
+Experiment 8 Inference
+1/0 queue callbacks are executed after Micro-task queues callbacks and Timer queue callbacks
+
+
 
