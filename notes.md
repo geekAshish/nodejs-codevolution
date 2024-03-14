@@ -364,3 +364,124 @@ dynamic html value
 # HTTP Routing
 
 # Web Framework
+
+# Libuv
+
+- What?
+  Libuv is a cross platform open source library written in C language
+
+- Why?
+  handles asynchronous non-blocking operations in Node.js
+
+- How?
+
+1. Thread pool
+2. Event loop
+
+# Thread Pool
+
+- Main thread:
+  "Hey Libuv, I need to read file contents but that is a time consuming task. I don't
+  want to block further code from being executed during this time. Can I offload this
+  task to you?"
+
+- Libuv:
+  "Sure, main thread. Unlike you, who is single threaded, I have a pool of threads
+  that I can use to run some of these time consuming tasks. When the task is done,
+  the file contents are retrieved and the associated callback function can be run."
+
+* Experiment 1 Inference
+  Every method in node.js that has the "sync" suffix always runs on the main thread
+  and is blocking
+
+* Experiment 2 Inference
+  A few async methods like fs.readFile and crypto.pbkdf2 run on a separate thread
+  in libuv's thread pool. They do run synchronously in their own thread but as far as
+  the main thread is concerned, it appears as if the method is running
+  asynchronously
+
+* Experiment 3 Inference
+  Libuv's thread pool has 4 threads
+
+# Thread Pool Size
+
+process.env.UV_THREADPOOL_SIZE = 6;
+
+- Experiment 4 Inference
+  By increasing the thread pool size, we are able to improve the total time taken to
+  run multiple calls of an asynchronous method like pbkdf2
+
+* Experiment 5 Inference
+  Increasing the thread pool size can help with performance but that is limited by the
+  number of available CPU cores
+
+# Network I/O
+- Experiment 6 Inference
+1. Although both crypto.pbkdf2 and https.request are asynchronous, https.request
+method does not seem to use the thread pool
+2. https.request does not seem to be affected by the number of CPU cores either
+
+
+1. https.request is a network input/output operation and not a CPU bound operation
+2. It does not use the thread pool
+3. Libuv instead delegates the work to the operating system kernel and whenever possible, it will poll the kernel and see if the request has completed
+
+
+* Libuv and Async Methods Summary
+1. In Node.js, async methods are handled by Libuv
+2. They are handled in two different ways
+i. Native async mechanism
+ii. Thread pool
+3. Whenever possible, Libuv will use native async mechanisms in the OS so as to avoid blocking the main thread
+4. Since this is part of the kernel, there is different mechanism for each OS. We have epoll for Linux, Kqueue for MacOS and IO Completion Port on Windows
+5. Relying on native async mechanisms makes Node scalable as the only limitation is the operating systern kernel
+6. Example of this type is a network 1/0 operation
+
+
+* Libuv and Async Methods Summary contd.
+1. If there is no native async support and the task is file 1/0 or CPU intensive, Libuv uses the thread pool to avoid blocking the main thread
+2. Although the thread pool preserves asynchronicity with respect to Node's main thread, it can still become a bottleneck if all threads are busy
+
+
+
+
+# Event Loop
+* Async Code Execution
+1. JavaScript is a synchronous, blocking, single-threaded language
+2. To make async programming possible, we need the help of Libuv
+3. It is a C program and is part of Libuv
+4. A design pattern that orchestrates or co-ordinates the execution of synchronous and asynchronous code in Node.js
+
+* Asynchronous Code Execution in Node.js runtime
+
+* Few Questions
+1. Whenever an async task completes in Libuv, at what point does Node decide to run the associated callback function on the call stack?
+Answer 1. Callback functions are executed only when the call stack is empty. The normal flow of execution fill not be interrupted to run a callback function
+
+2. What about async methods like set Timeout and setInterval which also delay the execution of a callback function?
+Answer 2. set Timeout and setInterval callbacks are given first priority
+
+3. If two async tasks such as setTimeout and readFile complete at the same time, how does Node decide which callback function to run first on the call stack?
+Answer 3. Timer callbacks are executed before 1/0 callbacks even if both are ready at the exact same time
+
+
+* Event Loop - Execution Order
+1. User written synchronous JavaScript code takes priority over async code that the runtime would like to execute
+2. Only after the call stack is empty, the event loop comes into picture
+
+# Event Loop - Execution Order
+1. Any callbacks in the micro task queues are executed. First, tasks in the nextTick queue and only then tasks in the promise queue
+2. All callbacks within the timer queue are executed
+3. Callbacks in the micro task queues if present are executed. Again, first tasks in the next Tick queue and then tasks in the promise queue
+4. All callbacks within the 1/0 queue are executed
+5. Callbacks in the micro task queues if present are executed. nextTick queue followed by Promise queue.
+6. All callbacks in the check queue are executed
+7. Callbacks in the micro task queues if present are executed. Again, first tasks in the nextTick queue and then tasks in the promise queue
+8. All callbacks in the close queue are executed
+9. For one final time in the same loop, the micro task queues are executed. nextTick queue followed by promise queue.
+
+* If there are more callbacks to be processed, the loop is kept alive for one more run and the same steps are repeated
+* On the other hand, if all callbacks are executed and there is no more code to process, the event loop exits.
+
+
+# Micro task Queues
