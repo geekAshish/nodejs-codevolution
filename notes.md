@@ -568,7 +568,82 @@ They are nextTick, Promise, timer, 1/0, check and close queues
 8. nextTick and Promise queues are executed in between each queue and also in between each callback execution in the timer and check queues
 
 
+# What is npm?
+1. It is the world's largest software library (registry)
+2. It is a software package manager
 
 
 
+# Dependencies
+
+# Versioning
+npm i package-name@version
+
+# Versioning Rules
+When you fix a bug and the code stays backwards-compatible you increment the patch version.
+For example I.I.I to 1.1.2
+When you add new functionality but the code still stays backwards-compatible,
+you increment the minor version
+You also reset the patch version to zero
+For example I.I.I to 1.2.0
+When you make changes and the code is no more backwards compatible, you
+increment the major version
+You have to reset the minor and patch version to zero
+For example I.I.I to 2.0.0.
+
+# Few more points
+Semantic versioning always starts with 0.1.0
+0.Y.Z (a major version of zero) is used for initial development
+When the code is production-ready, you increment to version 1.0.0
+Even the simplest of changes has to be done with an increase in the version number
+
+
+# Global Packages
+
+# Scripts
+An npm script is a convenient way to bundle common commands for use in a project
+They are typically entered in the command line in order to do something with the application
+npm scripts are stored in a project's package.json file, giving access to everyone who has access to the codebase
+They also ensure that everyone is using the same command with the same options
+Common use cases for npm scripts include building your project, starting a development server, compiling CSS, linting, minifying etc
+npm scripts are executed using the command npm run <SCRIPT_NAME>
+
+# Publishing an npm Package
+create a NPM account
+npm adduser name
+npm publish
+
+# Building CLI Tools
+CLI stands for Command Line Interface
+A program that you can run from the terminal
+Ex: npm and git
+
+# CLI Options
+# Interactive CLI Tools
+
+
+# Cluster Module
+
+Node is single threaded
+No matter how many cores you have, node only uses a single core of your CPU
+This is fine for I/O operations but if the code has long running and CPU intensive operations, your application might struggle from a performance point of view
+
+* Cluster Module contd.
+The cluster module enables the creation of child processes (also called workers) that run simultaneously
+All created workers share the same server port
+
+https://youtu.be/SHR-KmfRIsU?si=x52A82t3lAAsRsbB
+
+npm i -g pm2
+
+
+# Worker Threads Module
+1. The worker_threads module enables the use of threads that execute JavaScript in parallel
+2. Code executed in a worker thread runs in a separate child process, preventing it from blocking your main application
+3. The cluster module can be used to run multiple instances of Node.js that can distribute workloads
+4. worker_threads module allows running multiple application threads within a single Node.js instance
+5. When process isolation is not needed, that is, no separate instances of V8, event loop and memory are needed, you should use worker_threads
+
+# Deploying Node.js App
+https://youtu.be/yln_CffenYw?si=_EAZtbsCajIAQwus
 
