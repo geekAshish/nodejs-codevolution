@@ -186,6 +186,11 @@ like sort, map, filter methods
 
 Asynchronous callbacks in browser: EventHandlers
 
+# Callback Pattern
+
+In JavaScript, functions are first class objects
+A function can be passed as an argument to a function
+A function can also be returned as values from other functions
 
 # Asynchronous JavaScript
 
