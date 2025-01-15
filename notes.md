@@ -153,6 +153,34 @@ path, events, fs, stream, http
 The path module provides utilities for working with file and directory paths
 
 
+
+const path = require('node:path');
+const path = require('path'); // same
+
+console.log(path.parse(\_\_filename))
+console.log(path.format(path.parse(\_\_filename)))
+console.log(path.isAbsolute(\_\_filename))
+console.log(path.isAbsolute("./path.json'))
+
+console.log(path.join( "folderl", "folder2" ,"index.html"))
+console.log(path.join( "/folderl", "folder2" ,"index.html"))
+console.log(path.join( "/folderl", "//folder2" ,"index.html"))
+console.log(path.join( "/folderl", "//folder2" ,"../index.html"))
+console.log(path.join( \_\_dirname, 'data.json'))
+
+console.log(path.resolve( "folderl", "folder2" ,"index.html"))
+console.log(path.resolve( "/folderl", "folder2" ,"index.html"))
+console.log(path.resolve( "/folderl", "//folder2" ,"index.html"))
+console.log(path.resolve( "/folderl", "//folder2" ,"../index.html"))
+console.log(path.resolve( \_\_dirname, 'data.json'))
+
+node: Protocol
+Makes it perfectly clear that the import is a Node.js builtin module
+Makes the import identifier a valid absolute URL
+Avoids conflicts for future Node.js built-in modules
+
+
+
 # Callbacks
 In JavaScript, functions are first class objects
 A function can be passed as an argument to a function
