@@ -1,6 +1,8 @@
 const http = require('node:http');
 const fs = require('node:fs');
 
+// http also extends the event emitter class
+
 // createServer to create a server which take req listener and res listener
 // req object give us information about incoming request
 // and res object used to send back the response to the client
